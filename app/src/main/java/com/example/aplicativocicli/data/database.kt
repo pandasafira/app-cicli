@@ -17,13 +17,10 @@ import androidx.room.RoomDatabase
         Alarm::class,
         MedicationHistory::class
     ],
-    version = 1,          // tem que ser igual ao PRAGMA user_version do cicli.db
+    version = 1,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
-
-    // Os DAOs entram aqui depois, ex.: abstract fun alarmDao(): AlarmDao
-
     companion object {
         @Volatile private var instance: AppDatabase? = null
 

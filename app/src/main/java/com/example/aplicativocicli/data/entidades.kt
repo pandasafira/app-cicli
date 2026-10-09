@@ -5,14 +5,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-
-// Status da dose. O Room guarda enums como TEXT (nome do valor): 'TAKEN' / 'NOT_TAKEN'
-enum class DoseStatus { TAKEN, NOT_TAKEN }
-
-// =====================================================================
-// BLOCO 1: USUÁRIO
-// =====================================================================
-
+enum class DoseStatus { True, False }
+//user
 @Entity(tableName = "users")
 data class User(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -20,11 +14,6 @@ data class User(
     @ColumnInfo(name = "birth_date") val birthDate: String,
     @ColumnInfo(name = "created_at") val createdAt: String
 )
-
-// =====================================================================
-// BLOCO 2: CATÁLOGO (pré-carregado, somente leitura)
-// =====================================================================
-
 @Entity(
     tableName = "birth_pill",
     indices = [Index(value = ["med_name_search"])]
@@ -109,9 +98,6 @@ data class BirthPillMedicineToAvoid(
     @ColumnInfo(name = "medicine_to_avoid_id") val medicineToAvoidId: Long
 )
 
-// =====================================================================
-// BLOCO 3: CARTELA, ALARME E HISTÓRICO
-// =====================================================================
 
 @Entity(
     tableName = "pill_pack",

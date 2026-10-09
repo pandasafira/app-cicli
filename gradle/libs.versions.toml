@@ -11,6 +11,7 @@ material = "1.12.0"
 junit = "4.13.2"
 androidx-espresso-core = "3.6.1"
 androidx-junit = "1.2.1"
+fragment = "1.9.1"
 
 [libraries]
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity-ktx" }
@@ -24,6 +25,7 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "a
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
