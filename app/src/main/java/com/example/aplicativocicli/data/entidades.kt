@@ -14,6 +14,8 @@ data class User(
     @ColumnInfo(name = "birth_date") val birthDate: String,
     @ColumnInfo(name = "created_at") val createdAt: String
 )
+
+// pilulas
 @Entity(
     tableName = "birth_pill",
     indices = [Index(value = ["med_name_search"])]
@@ -29,6 +31,7 @@ data class BirthPill(
     @ColumnInfo(name = "source_date") val sourceDate: String?
 )
 
+// composicao da pilula, principio ativo
 @Entity(
     tableName = "active_ingredient",
     indices = [Index(value = ["name_search"])]
@@ -39,6 +42,8 @@ data class ActiveIngredient(
     @ColumnInfo(name = "name_search") val nameSearch: String
 )
 
+
+// tabela relacao n:n pra conectar principio ativo com a pilula
 @Entity(
     tableName = "birth_pill_ingredient",
     primaryKeys = ["birth_pill_id", "ingredient_id"],
@@ -63,6 +68,8 @@ data class BirthPillIngredient(
     @ColumnInfo(name = "ingredient_id") val ingredientId: Long
 )
 
+
+// medicamentos pra evitar pois corta o efeito, sera usado na busca
 @Entity(
     tableName = "medicine_to_avoid",
     indices = [Index(value = ["name_search"])]
@@ -74,6 +81,8 @@ data class MedicineToAvoid(
     val why: String
 )
 
+
+// tablea relacoa n:n pra conectar
 @Entity(
     tableName = "birth_pill_medicine_to_avoid",
     primaryKeys = ["birth_pill_id", "medicine_to_avoid_id"],
@@ -98,7 +107,7 @@ data class BirthPillMedicineToAvoid(
     @ColumnInfo(name = "medicine_to_avoid_id") val medicineToAvoidId: Long
 )
 
-
+// historico do user com a pilula
 @Entity(
     tableName = "pill_pack",
     foreignKeys = [
@@ -132,6 +141,8 @@ data class PillPack(
     @ColumnInfo(name = "created_at") val createdAt: String
 )
 
+
+// alarme no geral
 @Entity(
     tableName = "alarm",
     foreignKeys = [
@@ -155,6 +166,7 @@ data class Alarm(
     @ColumnInfo(name = "created_at") val createdAt: String
 )
 
+// historico de tomadas
 @Entity(
     tableName = "medication_history",
     foreignKeys = [
