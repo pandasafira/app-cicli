@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.aplicativocicli.classes.userDao
 
 @Database(
     entities = [
@@ -21,6 +22,8 @@ import androidx.room.RoomDatabase
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
+
+    abstract fun userDao(): userDao
     companion object {
         @Volatile private var instance: AppDatabase? = null
 

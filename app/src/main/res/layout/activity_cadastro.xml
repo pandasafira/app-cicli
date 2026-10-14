@@ -7,8 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F6E7EA"
-    tools:context="cadastro1">
+    tools:context=".cadastro">
 
+    <!-- Topo -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -19,185 +20,130 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
-    <FrameLayout
-        android:id="@+id/card_2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/card_alarme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="237dp">
-
-        <EditText
-            android:id="@+id/editTextDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="date" />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/silkscreen_regular"
-        android:text="Seu nome"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="99dp" />
-
-    <FrameLayout
-        android:id="@+id/card_2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/card_alarme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="127dp" >
-
-        <EditText
-            android:id="@+id/editTextText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Digite seu nome" />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/silkscreen_regular"
-        android:text="Data de nascimento"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="208dp" />
-
-    <FrameLayout
-        android:id="@+id/card_2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/card_alarme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="464dp">
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/silkscreen_regular"
-        android:text="Anticoncepcional"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="318dp" />
-
-    <FrameLayout
-        android:id="@+id/card_2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/card_alarme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="350dp">
-
-        <EditText
-            android:id="@+id/editTextText2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Digite o anticoncepcional que você toma" />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/silkscreen_regular"
-        android:text="Tipo da cartela"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="435dp" />
-
-    <FrameLayout
-        android:id="@+id/card_2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/card_alarme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="464dp">
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/silkscreen_regular"
-        android:text="Último dia que iniciou a cartela"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="555dp" />
-
-    <FrameLayout
-        android:id="@+id/card_2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/card_alarme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="584dp">
-
-        <EditText
-            android:id="@+id/editTextDate2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="date" />
-    </FrameLayout>
-
     <TextView
         android:id="@+id/titulo"
-        android:layout_width="104dp"
-        android:layout_height="27dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/silkscreen_bold"
         android:text="CICLI"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        android:textColor="#FFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar"
-        app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/botao_concluir"
-        android:layout_width="100dp"
-        android:layout_height="29dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:backgroundTint="#B86D82"
-        android:fontFamily="@font/silkscreen_regular"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        android:padding="0dp"
-        android:text="Concluir"
         android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        app:cornerRadius="0dp"
-        tools:layout_editor_absoluteX="295dp"
-        tools:layout_editor_absoluteY="659dp" />
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="@id/toolbar" />
 
+    <!-- Formulário -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Seu nome" />
+
+            <EditText
+                android:id="@+id/edit_nome"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_alarme"
+                android:paddingHorizontal="12dp"
+                android:hint="Digite seu nome"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Data de nascimento" />
+
+            <EditText
+                android:id="@+id/edit_nascimento"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_alarme"
+                android:paddingHorizontal="12dp"
+                android:hint="dd/mm/aaaa"
+                android:inputType="date" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Anticoncepcional" />
+
+            <EditText
+                android:id="@+id/edit_anticoncepcional"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_alarme"
+                android:paddingHorizontal="12dp"
+                android:hint="Digite o anticoncepcional que você toma"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Tipo da cartela" />
+
+            <Spinner
+                android:id="@+id/spinner_cartela"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_alarme"
+                android:paddingHorizontal="12dp"
+                android:entries="@array/tipos_cartela" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Último dia que iniciou a cartela" />
+
+            <EditText
+                android:id="@+id/edit_inicio_cartela"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_alarme"
+                android:paddingHorizontal="12dp"
+                android:hint="dd/mm/aaaa"
+                android:inputType="date" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/botao_concluir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="28dp"
+                android:backgroundTint="#B86D82"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Concluir"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                app:cornerRadius="0dp" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

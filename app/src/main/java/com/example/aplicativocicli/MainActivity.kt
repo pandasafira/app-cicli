@@ -16,19 +16,21 @@ import com.example.projetoappcicli.R
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val prefs = getSharedPreferences("cicli", MODE_PRIVATE)
+        if (!prefs.getBoolean("cadastrado", false)) {
+            startActivity(Intent(this, cadastro::class.java))
+            finish()
+            return
+        }
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
         val botao_alarme = findViewById<Button>(R.id.botao_alarme_teste)
-        val botao_prox = findViewById<Button>(R.id.botao_concluir)
 
         botao_alarme.setOnClickListener {
             botao_alarme.visibility = View.INVISIBLE
             Toast.makeText(this, "Funcionou!", Toast.LENGTH_SHORT).show()
             }
-
-        botao_prox.setOnClickListener {
-            val intencao = Intent(this, activity_cadastro::class.jav)
-        }
         }
     }

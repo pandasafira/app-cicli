@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipos_cartela">
+        <item>21 dias</item>
+        <item>24 dias</item>
+        <item>28 dias</item>
+        <item>Uso contínuo</item>
+    </string-array>
+</resources>
