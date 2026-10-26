@@ -10,12 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.aplicativocicli.data.AppDatabase
 import com.example.aplicativocicli.data.User
-import com.example.projetoappcicli.R
+import com.example.aplicativocicli.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.ResolverStyle
 
@@ -36,7 +35,7 @@ class cadastro : AppCompatActivity() {
         fun tela_inicial() {
             getSharedPreferences("cicli", MODE_PRIVATE).edit().putBoolean("cadastrado", true)
                 .apply()
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, main::class.java))
             finish()
         }
 

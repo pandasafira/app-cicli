@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.projetoappcicli"
+    namespace = "com.example.aplicativocicli"
     compileSdk = 35
 
     defaultConfig {

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="tipos_cartela">
-        <item>21 dias</item>
-        <item>24 dias</item>
-        <item>28 dias</item>
-        <item>Uso contínuo</item>
+        <item>21 dias + 7 de pausa</item>
+        <item>22 dias + 6 de pausa</item>
+        <item>24 dias + 4 de pausa</item>
+        <item>28 dias + 2 dias de pausa</item>
+        <item>21 dias ativos + 7 comprimidos placebo</item>
+        <item>24 dias ativos + 4 comprimidos placebo</item>
+        <item>Regime estendido (84 dias ativos + 7 dias de pausa ou placebo)</item>
+        <item>Uso contínuo (28 dias ativos, sem pausa)</item>
     </string-array>
 </resources>
