@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="limit_repeticao">
+        <item>1 vez</item>
+        <item>2 vezes</item>
+        <item>3 vezes</item>
+        <item>4 vezes</item>
+        <item>5 vezes</item>
+    </string-array>
+</resources>
