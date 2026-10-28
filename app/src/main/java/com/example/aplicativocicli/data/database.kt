@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.aplicativocicli.classes.alarmDao
 import com.example.aplicativocicli.classes.userDao
+import com.example.aplicativocicli.classes.pilulaDao
+import com.example.aplicativocicli.classes.pillPack.pillPackDao
 
 @Database(
     entities = [
@@ -19,11 +22,15 @@ import com.example.aplicativocicli.classes.userDao
         MedicationHistory::class
     ],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): userDao
+    abstract fun alarmDao(): alarmDao
+    abstract fun pilulaDao(): pilulaDao
+    abstract fun pillPackDao() : pillPackDao
+
     companion object {
         @Volatile private var instance: AppDatabase? = null
 

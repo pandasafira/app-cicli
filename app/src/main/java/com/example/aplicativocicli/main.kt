@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.aplicativocicli.data.AppDatabase
-import com.example.aplicativocicli.R
+import com.example.aplicativocicli.alarm.notificacao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,5 +46,7 @@ class main : AppCompatActivity() {
         botao_alarme.setOnClickListener {
             config_alarme()
             }
+
+        notificacao.createChannel(this)
         }
     }

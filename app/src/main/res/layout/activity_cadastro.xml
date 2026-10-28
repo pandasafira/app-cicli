@@ -89,7 +89,7 @@
                 android:fontFamily="@font/silkscreen_regular"
                 android:text="Anticoncepcional" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/edit_anticoncepcional"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -97,6 +97,7 @@
                 android:background="@drawable/card_alarme"
                 android:paddingHorizontal="12dp"
                 android:hint="Digite o anticoncepcional que você toma"
+                android:completionThreshold="1"
                 android:inputType="text" />
 
             <TextView
