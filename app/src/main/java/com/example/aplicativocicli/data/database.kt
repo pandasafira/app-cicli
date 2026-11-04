@@ -8,6 +8,7 @@ import com.example.aplicativocicli.classes.alarmDao
 import com.example.aplicativocicli.classes.userDao
 import com.example.aplicativocicli.classes.pilulaDao
 import com.example.aplicativocicli.classes.pillPack.pillPackDao
+import com.example.aplicativocicli.classes.historicoDao
 
 @Database(
     entities = [
@@ -30,6 +31,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun alarmDao(): alarmDao
     abstract fun pilulaDao(): pilulaDao
     abstract fun pillPackDao() : pillPackDao
+    abstract fun historicoDao() : historicoDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null

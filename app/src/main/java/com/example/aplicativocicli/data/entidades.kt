@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-enum class DoseStatus { True, False }
+enum class DoseStatus { TAKEN, NOT_TAKEN }
 //user
 @Entity(tableName = "users")
 data class User(

@@ -12,4 +12,13 @@ interface pilulaDao {
 
     @Insert
     suspend fun inserir(pilula: BirthPill): Long
+
+    @Query("SELECT * FROM birth_pill WHERE id = :id")
+    suspend fun buscarPorId(id: Long): BirthPill?
+
+    @Query("SELECT ai.name FROM active_ingredient ai JOIN birth_pill_ingredient bpi ON bpi.ingredient_id = ai.id WHERE bpi.birth_pill_id = :id")
+    suspend fun principiosAtivos(id: Long): List<String>
+
+    @Query("SELECT mta.* FROM medicine_to_avoid mta JOIN birth_pill_medicine_to_avoid bpm ON bpm.medicine_to_avoid_id = mta.id WHERE bpm.birth_pill_id = :id ORDER BY mta.name")
+    suspend fun medicamentosEvitar(id: Long): List<MedicineToAvoid>
 }

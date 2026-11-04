@@ -29,9 +29,13 @@ object notificacao {
         context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
     }
 
+    fun cancelar(context: Context, alarmId: Int) {
+        NotificationManagerCompat.from(context).cancel(alarmId)
+    }
+
     fun show(context: Context, extras: Bundle) {
         val alarmId = extras.getInt("alarm_id")
-        val intent = Intent(context, verfica_alarm::class.java).putExtras(extras).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val intent = Intent(context, AlarmActivity::class.java).putExtras(extras).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pi = PendingIntent.getActivity(context, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)

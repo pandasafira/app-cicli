@@ -59,7 +59,15 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.aplicativocicli.alterar_cartela"
+            android:name=".alterar_cartela"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".alarm.TelaAlarmeAtividade"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".infos_medicamentos"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>

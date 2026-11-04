@@ -22,11 +22,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintSet
+import android.widget.AutoCompleteTextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import org.jetbrains.annotations.TestOnly
+import android.widget.ArrayAdapter
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -111,6 +111,20 @@ class main : AppCompatActivity() {
         }
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        val busca = findViewById<AutoCompleteTextView>(R.id.busca)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val pilulas = AppDatabase.get(this@main).pilulaDao().listar()
+            withContext(Dispatchers.Main) {
+                busca.setAdapter(ArrayAdapter(this@main, android.R.layout.simple_dropdown_item_1line, pilulas.map { it.medName }))
+                busca.setOnItemClickListener { parent, _, position, _ ->
+                    val nome = parent.getItemAtPosition(position) as String
+                    val pilula = pilulas.first { it.medName == nome }
+                    busca.setText("")
+                    startActivity(Intent(this@main, infoPilula::class.java).putExtra("pill_id", pilula.id))
+                }
+            }
+        }
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)

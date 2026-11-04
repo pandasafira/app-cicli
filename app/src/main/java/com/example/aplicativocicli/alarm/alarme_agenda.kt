@@ -8,6 +8,18 @@ import com.example.aplicativocicli.main
 import java.util.Calendar
 
 object alarme_agenda {
+    private const val OFFSET_REPETICAO = 100000
+
+    fun agendarRepeticao(context: Context, extras: Bundle) {
+        val alarmId = extras.getInt("alarm_id")
+        val novo = Bundle(extras).apply { putInt("attempt", extras.getInt("attempt") + 1) }
+        val quando = System.currentTimeMillis() + extras.getInt("interval") * 60_000L
+        schedule(context, quando, novo, alarmId + OFFSET_REPETICAO)
+    }
+
+    fun cancelarRepeticao(context: Context, alarmId: Int) {
+        cancel(context, alarmId + OFFSET_REPETICAO)
+    }
     fun schedule(context: Context, triggerAt: Long, extras: Bundle, requestCode: Int) {
         val am = context.getSystemService(AlarmManager::class.java)
         val intent = Intent(context, AlarmReceiver::class.java).putExtras(extras)
