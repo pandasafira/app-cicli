@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="inter_repeticao">
+        <item>1 hora</item>
+        <item>45 minutos</item>
+        <item>30 minutos</item>
+        <item>15 minutos</item>
+        <item>10 minutos</item>
+        <item>5 minutos</item>
+        <item>Não repetir o alarme</item>
+    </string-array>
+</resources>

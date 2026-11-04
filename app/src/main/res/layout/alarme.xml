@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6E7EA"
+    android:fitsSystemWindows="true"
+    tools:context=".alarme">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#B86D82"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@id/btnSalvar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Configurar Alarme"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#B86D82"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Aqui você define o horário e as regras do seu lembrete diário."
+                android:textColor="#6B4A55"
+                android:gravity="center" />
+
+            <!-- Card horário: Ajustado para 90dp fixos e padding menor -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/card_alarme"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Horário do alarme"
+                        android:textColor="#B86D82"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Defina o horário do seu lembrete"
+                        android:textColor="#6B4A55"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <NumberPicker
+                    android:id="@+id/pickerHora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="76dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:text=":"
+                    android:textColor="#B86D82"
+                    android:textSize="20sp" />
+
+                <!-- Reduzido a altura do NumberPicker para caber nos 90dp -->
+                <NumberPicker
+                    android:id="@+id/pickerMinuto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="76dp" />
+
+            </LinearLayout>
+
+            <!-- Card intervalo: Ajustado para 90dp fixos e padding menor -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/card_alarme">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Intervalo de Repetições"
+                        android:textColor="#B86D82"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Configure o intervalo que o seu alarme deve repetir"
+                        android:textColor="#6B4A55"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spinnerIntervalo"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/inter_repeticao" />
+            </LinearLayout>
+
+            <!-- Card limite: Ajustado para 90dp fixos e padding menor -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/card_alarme">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Limite de Repetições"
+                        android:textColor="#B86D82"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Determine quantas vezes o seu alarme pode repetir"
+                        android:textColor="#6B4A55"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spinnerLimite"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/limit_repeticao" />
+            </LinearLayout>
+
+            <!-- Card ativo: Ajustado para 90dp fixos e padding menor -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/card_alarme">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Alarme ativo"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#B86D82" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchAtivo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Você pode alterar essas configurações a qualquer momento."
+                android:textColor="#6B4A55"
+                android:gravity="center" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botão salvar -->
+    <Button
+        android:id="@+id/btnSalvar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_margin="16dp"
+        android:text="Salvar"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#B86D82"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
