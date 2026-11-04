@@ -80,7 +80,8 @@
                 android:background="@drawable/card_alarme"
                 android:paddingHorizontal="12dp"
                 android:hint="dd/mm/aaaa"
-                android:inputType="date" />
+                android:inputType="number"
+                android:maxLength="10"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -131,7 +132,8 @@
                 android:background="@drawable/card_alarme"
                 android:paddingHorizontal="12dp"
                 android:hint="dd/mm/aaaa"
-                android:inputType="date" />
+                android:inputType="number"
+                android:maxLength="10" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/botao_concluir"

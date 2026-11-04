@@ -2,6 +2,7 @@ package com.example.aplicativocicli
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -21,6 +22,8 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.ResolverStyle
+import java.text.Normalizer
+import android.text.TextWatcher
 
 class cadastro : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,12 +97,21 @@ class cadastro : AppCompatActivity() {
             return true
         }
 
+        fun normalizar(texto: String) =
+            Normalizer.normalize(texto.trim().lowercase(), Normalizer.Form.NFD).replace(Regex("\\p{M}"), "")
+
         botao_main.setOnClickListener {
-            val pilula = pilulas.find { it.medName == anticoncepcional.text.toString() }
+            val nomeDigitado = anticoncepcional.text.toString().trim()
+            val pilula = pilulas.find { normalizar(it.medName) == normalizar(nomeDigitado) }
+
             if (valida_campo_nome(nome.text.toString()) == false) {
                 Toast.makeText(this, "Confira seu nome", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            } else if (valida_campo_data(data_nasc.text.toString()) == false) {
+            } else if (nomeDigitado.isBlank()) {
+                Toast.makeText(this, "Informe seu anticoncepcional", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else if (valida_campo_data(data_nasc.text.toString()) == false) {
                 Toast.makeText(
                     this, "Confira sua data de nascimento",
                     Toast.LENGTH_LONG
@@ -117,6 +129,18 @@ class cadastro : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.get(this@cadastro)
                 val userId = db.userDao().inserir(user_banco)
+
+                val pilulaId = pilula?.id ?: db.pilulaDao().inserir(
+                    BirthPill(
+                        medName = nomeDigitado,
+                        medNameSearch = normalizar(nomeDigitado),
+                        activeDays = ativos,
+                        placeboDays = placebo,
+                        pauseDays = pausa,
+                        missHours = null,
+                        sourceDate = null
+                    )
+                )
                 db.pillPackDao().inserir(
                     PillPack(
                         userId = userId,
@@ -132,6 +156,30 @@ class cadastro : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     tela_inicial()
                     }
+                }
+
+                fun mascaraData(campo: EditText) {
+                    campo.addTextChangedListener(object : TextWatcher {
+                        var editando = false
+                        override fun afterTextChanged(s: Editable?) {
+                            if (editando) return
+                            editando = true
+                            val numeros = s.toString().filter { it.isDigit() }.take(8)
+                            val formatado = StringBuilder()
+                            numeros.forEachIndexed { i, c ->
+                                if (i == 2 || i == 4) formatado.append('/')
+                                formatado.append(c)
+                            }
+                            campo.setText(formatado)
+                            campo.setSelection(formatado.length)
+                            editando = false
+                        }
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    })
+
+                    mascaraData(data_nasc)
+                    mascaraData(ini_cartela)
                 }
 
             }

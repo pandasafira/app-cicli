@@ -9,7 +9,10 @@ class pillPack {
     interface pillPackDao {
         @Insert
         suspend fun inserir(cartela: PillPack): Long
-        @Query("SELECT * FROM pill_pack WHERE is_current = 1")
-        suspend fun buscarAtual(): PillPack?
+        @Query("SELECT bp.med_name FROM pill_pack pp join birth_pill bp on bp.id = pp.birth_pill_id WHERE pp.is_current = 1 ORDER BY pp.id DESC LIMIT 1 ")
+        suspend fun buscarAtual(): String?
+
+        @Query("SELECT * FROM pill_pack WHERE is_current = 1 ORDER BY id DESC LIMIT 1")
+        suspend fun cartelaAtual(): PillPack?
     }
 }

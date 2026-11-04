@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_perfil" android:title="Meu perfil" />
+    <item android:id="@+id/menu_cartela" android:title="Alterar cartela" />
+    <item android:id="@+id/menu_alarme" android:title="Configurar alarme" />
+</menu>

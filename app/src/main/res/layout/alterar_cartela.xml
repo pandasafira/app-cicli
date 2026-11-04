@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6E7EA"
+    android:fitsSystemWindows="true"
+    tools:context=".historico">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#B86D82"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/silkscreen_bold"
+        android:text="CICLI"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="@id/toolbar" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/silkscreen_bold"
+                android:text="Alterar cartela"
+                android:textColor="#5A2E3A"
+                android:textSize="22sp" />
+
+            <!-- Cartela atual -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/card_alarme"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/silkscreen_regular"
+                    android:text="CARTELA ATUAL"
+                    android:textColor="#B86D82"
+                    android:textSize="11sp"
+                    android:layout_marginBottom="60dp"/>
+
+                <TextView
+                    android:id="@+id/txt_pilula_atual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/silkscreen_regular"
+                    android:text="Nome da pílula"
+                    android:textColor="#5A2E3A"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txt_tipo_atual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/silkscreen_regular"
+                    android:text="21 dias + 7 de pausa"
+                    android:textColor="#5A2E3A"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <!-- Nova cartela -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Novo anticoncepcional" />
+
+            <EditText
+                android:id="@+id/edit_novo_anticoncepcional"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_alarme"
+                android:hint="Digite o anticoncepcional"
+                android:inputType="text"
+                android:paddingHorizontal="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Tipo da cartela" />
+
+            <Spinner
+                android:id="@+id/spinner_nova_cartela"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_alarme"
+                android:entries="@array/tipos_cartela"
+                android:paddingHorizontal="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Início da nova cartela" />
+
+            <EditText
+                android:id="@+id/edit_inicio_nova_cartela"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_alarme"
+                android:hint="dd/mm/aaaa"
+                android:inputType="date"
+                android:paddingHorizontal="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Seu histórico continua salvo, só a cartela atual muda"
+                android:textColor="#B86D82"
+                android:textSize="9sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/botao_salvar_cartela"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="#B86D82"
+                android:fontFamily="@font/silkscreen_regular"
+                android:text="Salvar"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                app:cornerRadius="0dp" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

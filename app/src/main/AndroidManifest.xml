@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AplicativoCicli">
         <activity
-            android:name="com.example.aplicativocicli.main"
+            android:name=".main"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.aplicativocicli.cadastro"
+            android:name=".cadastro"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
@@ -47,7 +47,19 @@
             android:showWhenLocked="true"
             android:turnScreenOn="true" />
         <activity
-            android:name="com.example.aplicativocicli.alarme"
+            android:name=".alarme"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".historicoAlarme"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".config_alarme"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.example.aplicativocicli.alterar_cartela"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>

@@ -1,6 +1,7 @@
 package com.example.aplicativocicli.classes
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import com.example.aplicativocicli.data.BirthPill
 
@@ -8,4 +9,7 @@ import com.example.aplicativocicli.data.BirthPill
 interface pilulaDao {
     @Query("SELECT * FROM birth_pill ORDER BY med_name")
     suspend fun listar(): List<BirthPill>
+
+    @Insert
+    suspend fun inserir(pilula: BirthPill): Long
 }
