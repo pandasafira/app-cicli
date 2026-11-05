@@ -157,19 +157,19 @@ class main : AppCompatActivity() {
 
     private fun atualizar_urso(){
         val urso_manha = findViewById<ImageView>(R.id.urso_manha)
-        val urso_noite = findViewById<ImageView>(R.id.urso_manha)
+        val urso_noite = findViewById<ImageView>(R.id.urso_noite)
 
         lifecycleScope.launch(Dispatchers.IO) {
             val agora = LocalTime.now()
             val formatador = DateTimeFormatter.ofPattern("HH:mm")
             val horaAtual = agora.format(formatador)
             withContext(Dispatchers.Main) {
-                if (horaAtual > "18:00") {
+                if (horaAtual > "19:00" || horaAtual < "06:00" ) {
                     urso_manha.visibility = View.GONE
                     urso_noite.visibility = View.VISIBLE
                 } else {
-                    urso_noite.visibility = View.VISIBLE
-                    urso_manha.visibility = View.GONE
+                    urso_manha.visibility = View.VISIBLE
+                    urso_noite.visibility = View.GONE
                 }
             }
         }

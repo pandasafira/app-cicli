@@ -26,6 +26,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.ResolverStyle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 class alterar_cartela : AppCompatActivity() {
     private val cartelas = listOf(
@@ -44,6 +46,12 @@ class alterar_cartela : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.alterar_cartela)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val teclado = insets.getInsets(WindowInsetsCompat.Type.ime())
+            v.setPadding(0, 0, 0, teclado.bottom)
+            insets
+        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)

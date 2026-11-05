@@ -24,12 +24,42 @@ import java.time.format.DateTimeFormatter
 import java.time.format.ResolverStyle
 import java.text.Normalizer
 import android.text.TextWatcher
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 class cadastro : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private fun mascaraData(campo: EditText) {
+        campo.addTextChangedListener(object : TextWatcher {
+            var editando = false
+            override fun afterTextChanged(s: Editable?) {
+                if (editando) return
+                editando = true
+                val numeros = s.toString().filter { it.isDigit() }.take(8)
+                val formatado = StringBuilder()
+                numeros.forEachIndexed { i, c ->
+                    if (i == 2 || i == 4) formatado.append('/')
+                    formatado.append(c)
+                }
+                campo.setText(formatado)
+                campo.setSelection(formatado.length)
+                editando = false
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+    }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_cadastro)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val teclado = insets.getInsets(WindowInsetsCompat.Type.ime())
+            v.setPadding(0, 0, 0, teclado.bottom)
+            insets
+        }
 
         val botao_main = findViewById<Button>(R.id.botao_concluir)
 
@@ -51,6 +81,9 @@ class cadastro : AppCompatActivity() {
         )
 
         var pilulas: List<BirthPill> = emptyList()
+
+        mascaraData(data_nasc)
+        mascaraData(ini_cartela)
 
         lifecycleScope.launch(Dispatchers.IO) {
             pilulas = AppDatabase.get(this@cadastro).pilulaDao().listar()
@@ -157,33 +190,8 @@ class cadastro : AppCompatActivity() {
                     tela_inicial()
                     }
                 }
-
-                fun mascaraData(campo: EditText) {
-                    campo.addTextChangedListener(object : TextWatcher {
-                        var editando = false
-                        override fun afterTextChanged(s: Editable?) {
-                            if (editando) return
-                            editando = true
-                            val numeros = s.toString().filter { it.isDigit() }.take(8)
-                            val formatado = StringBuilder()
-                            numeros.forEachIndexed { i, c ->
-                                if (i == 2 || i == 4) formatado.append('/')
-                                formatado.append(c)
-                            }
-                            campo.setText(formatado)
-                            campo.setSelection(formatado.length)
-                            editando = false
-                        }
-                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-                    })
-
-                    mascaraData(data_nasc)
-                    mascaraData(ini_cartela)
                 }
-
             }
 
         }
     }
-}
