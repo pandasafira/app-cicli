@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.provider.Settings
 import android.widget.TextView
@@ -28,11 +30,18 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
+import com.example.aplicativocicli.alarm.alarme_agenda
+import com.example.aplicativocicli.data.DoseStatus
+import com.example.aplicativocicli.data.MedicationHistory
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
+import com.example.aplicativocicli.alarm.dia_pausa
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 
 class main : AppCompatActivity() {
@@ -79,19 +88,69 @@ class main : AppCompatActivity() {
     }
 
     private fun atualizarBotao() {
-        val botao_alarme1 = findViewById<Button>(R.id.botao_alarme_teste)
-        val botao_alarme2_tomei = findViewById<Button>(R.id.botao_tomei)
-        botao_alarme1.setOnClickListener { config_alarme() }
+        val botaoAlarme = findViewById<Button>(R.id.botao_alarme_teste)
+        val botaoTomei = findViewById<Button>(R.id.botao_tomei)
+        botaoAlarme.setOnClickListener { startActivity(Intent(this, alarme::class.java)) }
+        botaoTomei.setOnClickListener { confirmarTomada() }
         lifecycleScope.launch(Dispatchers.IO) {
-            val tem_alarme = AppDatabase.get(this@main).alarmDao().buscarAtivo()
-            withContext(Dispatchers.Main) {
-                if (tem_alarme != null) {
-                    botao_alarme1.visibility = View.GONE
-                    botao_alarme2_tomei.visibility = View.VISIBLE
-                } else {
-                    botao_alarme1.visibility = View.VISIBLE
-                    botao_alarme2_tomei.visibility = View.GONE
+            val db = AppDatabase.get(this@main)
+            val alarme = db.alarmDao().buscarUltimo()
+            val cartela = db.pillPackDao().cartelaAtual()
+            var texto = "Tomei minha pílula"
+            var habilitado = true
+            if (alarme != null && cartela?.startDate != null) {
+                val pausa = dia_pausa.e_pausa(LocalDate.parse(cartela.startDate), cartela.activeDays, cartela.placeboDays, cartela.pauseDays)
+                val horario = LocalDateTime.of(LocalDate.now(), LocalTime.of(alarme.hour, alarme.minute)).toString()
+                val dose = db.historicoDao().buscarDose(cartela.id, horario)
+                if (pausa) {
+                    texto = "Hoje é dia de pausa"
+                    habilitado = false
+                } else if (dose?.status == DoseStatus.TAKEN) {
+                    texto = "Pílula de hoje tomada"
+                    habilitado = false
                 }
+            }
+            withContext(Dispatchers.Main) {
+                botaoAlarme.visibility = if (alarme != null) View.GONE else View.VISIBLE
+                botaoTomei.visibility = if (alarme != null) View.VISIBLE else View.GONE
+                botaoTomei.text = texto
+                botaoTomei.isEnabled = habilitado
+            }
+        }
+    }
+
+    private fun confirmarTomada() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val db = AppDatabase.get(this@main)
+            val alarme = db.alarmDao().buscarUltimo() ?: return@launch
+            val cartela = db.pillPackDao().cartelaAtual() ?: return@launch
+            val usuario = db.userDao().buscarUsuario() ?: return@launch
+            val agora = LocalDateTime.now().withNano(0)
+            val horario = LocalDateTime.of(LocalDate.now(), LocalTime.of(alarme.hour, alarme.minute))
+            val id = alarme.id.toInt()
+
+            db.historicoDao().inserir(
+                MedicationHistory(
+                    userId = usuario.id,
+                    packId = cartela.id,
+                    alarmId = alarme.id,
+                    scheduledAt = horario.toString(),
+                    confirmedAt = agora.toString(),
+                    status = DoseStatus.TAKEN,
+                    createdAt = agora.toString()
+                )
+            )
+
+            alarme_agenda.cancelarRepeticao(this@main, id)
+            notificacao.cancelar(this@main, id)
+            if (agora.isBefore(horario)) {
+                alarme_agenda.cancel(this@main, id)
+                alarme_agenda.agendar(this@main, alarme, amanha = true)
+            }
+
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@main, "Pílula confirmada!", Toast.LENGTH_SHORT).show()
+                atualizarBotao()
             }
         }
     }
@@ -114,8 +173,78 @@ class main : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    private fun atualizarCalendario() {
+        val calendario = findViewById<LinearLayout>(R.id.card_calendario)
+        val hoje = LocalDate.now()
+        val ptBR = Locale.forLanguageTag("pt-BR")
+        val mesAno = findViewById<TextView>(R.id.texto_mes_ano)
+        mesAno.text = hoje.format(DateTimeFormatter.ofPattern("MMMM yyyy", ptBR)).uppercase()
+        for (i in 0 until calendario.childCount) {
+            val dia = hoje.plusDays((i - 3).toLong())
+            val nomeDia = dia.dayOfWeek.getDisplayName(TextStyle.SHORT, ptBR).uppercase().replace(".", "")
+            val texto = calendario.getChildAt(i) as TextView
+            texto.text = "${dia.dayOfMonth}\n$nomeDia"
+            if (dia == hoje) {
+                texto.setTextColor(Color.parseColor("#B86D82"))
+                texto.setTypeface(texto.typeface, Typeface.BOLD)
+            } else {
+                texto.setTextColor(Color.parseColor("#8A7A7D"))
+                texto.setTypeface(Typeface.create(texto.typeface, Typeface.NORMAL))
+            }
+        }
+    }
 
+    private fun atualizarPeriodo() {
+        val texto = findViewById<TextView>(R.id.texto_periodo)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val cartela = AppDatabase.get(this@main).pillPackDao().cartelaAtual()
+            withContext(Dispatchers.Main) {
+                if (cartela?.startDate == null) {
+                    texto.text = ""
+                    return@withContext
+                }
+                val ativos = cartela.activeDays
+                val placebo = cartela.placeboDays
+                val pausa = cartela.pauseDays
+                val ciclo = ativos + placebo + pausa
+                val dias = ChronoUnit.DAYS.between(LocalDate.parse(cartela.startDate), LocalDate.now())
+                val dia = Math.floorMod(dias, ciclo.toLong()).toInt() + 1
+                texto.text = when {
+                    placebo + pausa == 0 -> "Uso contínuo"
+                    pausa > 0 && dia == ciclo -> "Amanhã começa a nova cartela"
+                    dia > ativos + placebo -> "Pausa da cartela"
+                    dia > ativos -> "Pílulas de placebo"
+                    dia > ativos - 3 -> "Reta final da cartela"
+                    dia <= 7 -> "Nova cartela 🌸"
+                    else -> "Fase ativa"
+                }
+            }
+        }
+    }
+
+    private fun atualizarComprimido() {
+        val texto = findViewById<TextView>(R.id.texto_comprimido)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val cartela = AppDatabase.get(this@main).pillPackDao().cartelaAtual()
+            withContext(Dispatchers.Main) {
+                if (cartela?.startDate == null) {
+                    texto.text = ""
+                    return@withContext
+                }
+                val ativos = cartela.activeDays
+                val placebo = cartela.placeboDays
+                val ciclo = ativos + placebo + cartela.pauseDays
+                val dias = ChronoUnit.DAYS.between(LocalDate.parse(cartela.startDate), LocalDate.now())
+                val dia = Math.floorMod(dias, ciclo.toLong()).toInt() + 1
+                texto.text = when {
+                    dia > ativos + placebo -> "Pausa: dia ${dia - ativos - placebo} de ${cartela.pauseDays}"
+                    dia > ativos -> "Placebo ${dia - ativos} de $placebo"
+                    else -> "Comprimido $dia de $ativos"
+                }
+            }
+        }
     }
 
 
@@ -125,6 +254,9 @@ class main : AppCompatActivity() {
         nomePilula()
         atualizarBotao()
         atualizar_urso()
+        atualizarCalendario()
+        atualizarPeriodo()
+        atualizarComprimido()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -197,9 +329,13 @@ class main : AppCompatActivity() {
                     val ciclo = cartela.activeDays + cartela.placeboDays + cartela.pauseDays
                     val dias = ChronoUnit.DAYS.between(LocalDate.parse(cartela.startDate), LocalDate.now())
                     val dia = Math.floorMod(dias, ciclo.toLong()).toInt() + 1
-                    val extra = cartela.placeboDays + cartela.pauseDays
-                    texto.text = if (dia > cartela.activeDays + cartela.placeboDays) "Pausa da cartela"
-                    else "Comprimido $dia de ${cartela.activeDays}+$extra"
+                    val ativos = cartela.activeDays
+                    val placebo = cartela.placeboDays
+                    texto.text = when {
+                        dia > ativos + placebo -> "Pausa: dia ${dia - ativos - placebo} de ${cartela.pauseDays}"
+                        dia > ativos -> "Placebo ${dia - ativos} de $placebo"
+                        else -> "Comprimido $dia de $ativos"
+                    }
                 } else {
                     texto.text = ""
                 }

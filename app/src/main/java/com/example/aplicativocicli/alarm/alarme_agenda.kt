@@ -4,7 +4,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import com.example.aplicativocicli.data.Alarm
+import com.example.aplicativocicli.data.AppDatabase
 import com.example.aplicativocicli.main
+import java.time.LocalDate
 import java.util.Calendar
 
 object alarme_agenda {
@@ -44,5 +47,23 @@ object alarme_agenda {
         }
         if (c.timeInMillis <= System.currentTimeMillis()) c.add(Calendar.DAY_OF_YEAR, 1)
         return c.timeInMillis
+    }
+
+    suspend fun agendar(context: Context, a: Alarm, amanha: Boolean = false) {
+        val cartela = AppDatabase.get(context).pillPackDao().cartelaAtual()
+        val extras = Bundle().apply {
+            putInt("alarm_id", a.id.toInt())
+            putInt("hour", a.hour)
+            putInt("minute", a.minute)
+            putInt("attempt", 0)
+            putInt("interval", a.intervalMinutes)
+            putInt("limit", a.repeatLimit)
+            putString("start_date", cartela?.startDate ?: LocalDate.now().toString())
+            putInt("active", cartela?.activeDays ?: 28)
+            putInt("placebo", cartela?.placeboDays ?: 0)
+            putInt("pause", cartela?.pauseDays ?: 0)
+        }
+        val quando = nextTime(a.hour, a.minute) + if (amanha) 86_400_000L else 0L
+        schedule(context, quando, extras, a.id.toInt())
     }
 }

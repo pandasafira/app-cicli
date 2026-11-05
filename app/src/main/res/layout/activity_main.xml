@@ -12,7 +12,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F6E7EA"
+        android:background="#F7E7E4"
         tools:context=".main">
 
         <androidx.appcompat.widget.Toolbar
@@ -152,17 +152,21 @@
             <!-- Botão antes do primeiro alarme -->
             <ImageView
                 android:id="@+id/urso_manha"
-                android:layout_width="90dp"
-                android:layout_height="120dp"
+                android:layout_width="120dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/manha"
+                app:layout_constraintBottom_toBottomOf="@id/clock"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/texto_nome_pilula" />
 
             <ImageView
                 android:id="@+id/urso_noite"
-                android:layout_width="90dp"
-                android:layout_height="120dp"
+                android:layout_width="120dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/noite"
+                app:layout_constraintBottom_toBottomOf="@id/clock"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/texto_nome_pilula" />
 
@@ -227,11 +231,22 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <ImageView
+                android:id="@+id/press"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="6dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/press"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/icone_historico" />
+
             <TextView
                 android:id="@+id/texto_historico"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="6dp"
                 android:fontFamily="@font/silkscreen_regular"
                 android:includeFontPadding="false"
                 android:text="HISTÓRICO"
@@ -240,8 +255,7 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/icone_historico"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/press" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Período -->
@@ -277,13 +291,27 @@
                 android:includeFontPadding="false"
                 android:text=""
                 android:textColor="#B86D82"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/icone_periodo"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/texto_mes_ano"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/silkscreen_regular"
+            android:includeFontPadding="false"
+            android:text="NOVEMBRO 2026"
+            android:textColor="#5A2E3A"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/card_periodo"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Calendário -->
         <LinearLayout
@@ -297,10 +325,10 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="7"
-            app:layout_constraintTop_toBottomOf="@id/card_periodo"
+            app:layout_constraintTop_toBottomOf="@id/texto_mes_ano"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="8dp">
 
             <TextView
                 android:layout_width="0dp"

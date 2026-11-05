@@ -14,5 +14,8 @@ class pillPack {
 
         @Query("SELECT * FROM pill_pack WHERE is_current = 1 ORDER BY id DESC LIMIT 1")
         suspend fun cartelaAtual(): PillPack?
+
+        @Query("UPDATE pill_pack SET is_current = 0 WHERE user_id = :userId")
+        suspend fun desmarcarAtuais(userId: Long)
     }
 }

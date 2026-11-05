@@ -77,7 +77,8 @@ class historicoAlarme : AppCompatActivity() {
         card.findViewById<TextView>(R.id.txt_status).text = if (tomada) "PÍLULA TOMADA" else "NÃO TOMADA"
         card.findViewById<TextView>(R.id.txt_data).text = data
         icone.text = if (tomada) "✓" else "✕"
-        icone.setTextColor(if (tomada) 0xFF5E9A5A.toInt() else 0xFFA33A3A.toInt())
+        icone.setTextColor(if (tomada) 0xFF5E9A5A.toInt() else 0xFFE06B6B.toInt())
+        icone.background.mutate().setTint(if (tomada) 0xFFC8DCC4.toInt() else 0xFFF5C6C6.toInt())
         card.findViewById<View>(R.id.aviso).visibility = if (tomada) View.GONE else View.VISIBLE
         lista.addView(card)
     }

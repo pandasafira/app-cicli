@@ -3,6 +3,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.aplicativocicli.data.Alarm
 
 
@@ -20,4 +21,10 @@ interface alarmDao {
     suspend fun listar(): List<Alarm>
     @Delete
     suspend fun excluir(alarme: Alarm)
+
+    @Query("SELECT * FROM alarm WHERE id = :id")
+    suspend fun buscarPorId(id: Long): Alarm?
+
+    @Update
+    suspend fun atualizar(alarme: Alarm)
 }

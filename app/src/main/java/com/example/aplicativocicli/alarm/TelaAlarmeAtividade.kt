@@ -68,7 +68,12 @@ class AlarmActivity : AppCompatActivity() {
                     )
                 )
             }
-            withContext(Dispatchers.Main) { finish() }
+            withContext(Dispatchers.Main) {
+                if (status == DoseStatus.TAKEN) {
+                    Toast.makeText(applicationContext, "Pílula confirmada!", Toast.LENGTH_SHORT).show()
+                }
+                finish()
+            }
         }
     }
 }

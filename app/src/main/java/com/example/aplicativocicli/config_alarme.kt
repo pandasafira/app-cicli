@@ -12,11 +12,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import com.example.aplicativocicli.data.Alarm
 import com.example.aplicativocicli.alarm.alarme_agenda
+import com.example.aplicativocicli.alarm.notificacao
 import com.example.aplicativocicli.data.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
 
 class config_alarme : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,11 +73,28 @@ class config_alarme : AppCompatActivity() {
                 .setPositiveButton("Excluir") { _, _ ->
                     lifecycleScope.launch(Dispatchers.IO) {
                         alarme_agenda.cancel(this@config_alarme, a.id.toInt())
+                        alarme_agenda.cancelarRepeticao(this@config_alarme, a.id.toInt())
+                        notificacao.cancelar(this@config_alarme, a.id.toInt())
                         AppDatabase.get(this@config_alarme).alarmDao().excluir(a)
                         withContext(Dispatchers.Main) { lista.removeView(item) }
                     }
                 }
                 .show()
+        }
+        val switch = item.findViewById<MaterialSwitch>(R.id.switch_ativo)
+        switch.isChecked = a.active
+        switch.setOnCheckedChangeListener { _, ligado ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                val atualizado = a.copy(active = ligado)
+                AppDatabase.get(this@config_alarme).alarmDao().atualizar(atualizado)
+                if (ligado) {
+                    alarme_agenda.agendar(this@config_alarme, atualizado)
+                } else {
+                    alarme_agenda.cancel(this@config_alarme, a.id.toInt())
+                    alarme_agenda.cancelarRepeticao(this@config_alarme, a.id.toInt())
+                    notificacao.cancelar(this@config_alarme, a.id.toInt())
+                }
+            }
         }
         lista.addView(item)
     }

@@ -65,6 +65,25 @@ class alarme : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
+        val alarmId = intent.getLongExtra("alarm_id", 0L)
+        var alarmeEditado: Alarm? = null
+        if (alarmId != 0L) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val a = AppDatabase.get(this@alarme).alarmDao().buscarPorId(alarmId) ?: return@launch
+                withContext(Dispatchers.Main) {
+                    alarmeEditado = a
+                    pickerHora.value = a.hour
+                    pickerMinuto.value = a.minute
+                    for (i in 0 until spinnerIntervalo.count) {
+                        val num = spinnerIntervalo.getItemAtPosition(i).toString().filter { it.isDigit() }.toIntOrNull() ?: 0
+                        if (num == a.intervalMinutes) { spinnerIntervalo.setSelection(i); break }
+                    }
+                    spinnerLimite.setSelection(a.repeatLimit - 1)
+                    switchAtivo.isChecked = a.active
+                }
+            }
+        }
+
         botao_salvar.setOnClickListener {
             val hora = pickerHora.value
             val minuto = pickerMinuto.value
@@ -75,41 +94,21 @@ class alarme : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.get(this@alarme)
                 val usuario = db.userDao().buscarUsuario() ?: return@launch
-
-                // salvar no banco
-                val novoAlarme = Alarm(
-                    userId = usuario.id,
-                    hour = hora,
-                    minute = minuto,
-                    intervalMinutes = intervalo,
-                    repeatLimit = limite,
-                    active = ativo,
-                    createdAt = LocalDate.now().toString()
-                )
-                val id = db.alarmDao().inserir(novoAlarme).toInt()
-
-                // agendar
-                val extras = Bundle().apply {
-                    putInt("alarm_id", id)
-                    putInt("hour", hora)
-                    putInt("minute", minuto)
-                    putInt("attempt", 0)
-                    putInt("interval", intervalo)
-                    putInt("limit", limite)
-                    putString("start_date", "2026-10-20")
-                    putInt("active", 21)
-                    putInt("placebo", 0)
-                    putInt("pause", 7)
+                val editado = alarmeEditado
+                val salvo = if (editado != null) {
+                    val novo = editado.copy(hour = hora, minute = minuto, intervalMinutes = intervalo, repeatLimit = limite, active = ativo)
+                    db.alarmDao().atualizar(novo)
+                    alarme_agenda.cancel(this@alarme, novo.id.toInt())
+                    novo
+                } else {
+                    val novo = Alarm(userId = usuario.id, hour = hora, minute = minuto, intervalMinutes = intervalo, repeatLimit = limite, active = ativo, createdAt = LocalDate.now().toString())
+                    novo.copy(id = db.alarmDao().inserir(novo))
                 }
-                if (ativo) {
-                    alarme_agenda.schedule(this@alarme, alarme_agenda.nextTime(hora, minuto), extras, id)
-                }
-
+                if (ativo) alarme_agenda.agendar(this@alarme, salvo)
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@alarme, "Alarme salvo!", Toast.LENGTH_SHORT).show()
                     finish()
                 }
-
             }
         }
     }

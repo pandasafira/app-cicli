@@ -17,4 +17,7 @@ interface historicoDao {
 
     @Query("DELETE FROM medication_history WHERE scheduled_at < :limite")
     suspend fun limparAntigos(limite: String)
+
+    @Query("SELECT * FROM medication_history WHERE pack_id = :packId AND scheduled_at = :agendado LIMIT 1")
+    suspend fun buscarDose(packId: Long, agendado: String): MedicationHistory?
 }

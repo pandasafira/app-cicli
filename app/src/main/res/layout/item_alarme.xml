@@ -83,7 +83,8 @@
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             app:thumbTint="#FFFFFF"
-            app:trackTint="#B86D82"
+            app:trackTint="@color/color_switch"
+            app:trackDecorationTint="@android:color/transparent"
             xmlns:app="http://schemas.android.com/apk/res-auto" />
     </LinearLayout>
 </FrameLayout>
