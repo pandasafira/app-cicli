@@ -33,7 +33,7 @@ class AlarmActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_nao_tomei).setOnClickListener {
-            if (intervalo > 0 && tentativa < limite) {
+            if (intervalo > 0 && tentativa + 1 < limite) {
                 notificacao.cancelar(this, alarmId)
                 alarme_agenda.agendarRepeticao(this, ex)
                 Toast.makeText(this, "Vou te lembrar de novo em $intervalo min", Toast.LENGTH_SHORT).show()

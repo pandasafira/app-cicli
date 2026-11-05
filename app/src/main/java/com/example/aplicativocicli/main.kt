@@ -27,7 +27,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 
@@ -92,12 +96,35 @@ class main : AppCompatActivity() {
         }
     }
 
+    private fun atualizar_urso(){
+        val urso_manha = findViewById<ImageView>(R.id.urso_manha)
+        val urso_noite = findViewById<ImageView>(R.id.urso_manha)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val agora = LocalTime.now()
+            val formatador = DateTimeFormatter.ofPattern("HH:mm")
+            val horaAtual = agora.format(formatador)
+            withContext(Dispatchers.Main) {
+                if (horaAtual > "18:00") {
+                    urso_manha.visibility = View.GONE
+                    urso_noite.visibility = View.VISIBLE
+                } else {
+                    urso_noite.visibility = View.VISIBLE
+                    urso_manha.visibility = View.GONE
+                }
+            }
+        }
+
+
+    }
+
 
     override fun onResume() {
         super.onResume()
         atualizarHorario()
         nomePilula()
         atualizarBotao()
+        atualizar_urso()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.aplicativocicli.data.BirthPill
+import com.example.aplicativocicli.data.MedicineToAvoid
 
 @Dao
 interface pilulaDao {

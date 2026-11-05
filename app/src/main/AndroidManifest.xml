@@ -67,7 +67,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".infos_medicamentos"
+            android:name=".infoPilula"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>

@@ -207,7 +207,8 @@
                 android:layout_marginTop="8dp"
                 android:paddingHorizontal="8dp"
                 android:fontFamily="sans-serif"
-                android:text="Atente-se a medicamentos como antibióticos. Na dúvida, use uma proteção de barreira e mantenha a mente tranquila."
+                android:text="Atente-se a medicamentos como antibióticos, anticonvulsivantes e antirretrovirais, usados no tratatamento para HIV.
+                \nNa dúvida, use uma proteção de barreira e mantenha a mente tranquila."
                 android:textColor="#5A2E3A"
                 android:textSize="12sp" />
         </LinearLayout>
