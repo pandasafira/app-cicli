@@ -17,13 +17,11 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.aplicativocicli.R
 
 object notificacao {
-    const val CHANNEL_ID = "cicli_alarm"
+    const val CHANNEL_ID = "cicli_alarm_v2"
 
     fun createChannel(context: Context) {
-        val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-        val attrs = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).build()
         val channel = NotificationChannel(CHANNEL_ID, "Alarme do anticoncepcional", NotificationManager.IMPORTANCE_HIGH).apply {
-            setSound(sound, attrs)
+            setSound(null, null)
             enableVibration(true)
         }
         context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
@@ -49,9 +47,8 @@ object notificacao {
             .build()
         notification.flags = notification.flags or Notification.FLAG_INSISTENT
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            som_alarme.tocar(context)
             NotificationManagerCompat.from(context).notify(alarmId, notification)
         }
     }
-
-    private fun setContentTitle(string: String) {}
 }

@@ -30,6 +30,7 @@ class AlarmActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_tomei).setOnClickListener {
             salvar(ex, DoseStatus.TAKEN)
+            som_alarme.parar()
         }
 
         findViewById<Button>(R.id.btn_nao_tomei).setOnClickListener {
@@ -37,6 +38,7 @@ class AlarmActivity : AppCompatActivity() {
                 notificacao.cancelar(this, alarmId)
                 alarme_agenda.agendarRepeticao(this, ex)
                 Toast.makeText(this, "Vou te lembrar de novo em $intervalo min", Toast.LENGTH_SHORT).show()
+                som_alarme.parar()
                 finish()
             } else {
                 salvar(ex, DoseStatus.NOT_TAKEN)
