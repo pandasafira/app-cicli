@@ -65,6 +65,16 @@ class main : AppCompatActivity() {
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             pedirNotificacao.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+        if (Build.VERSION.SDK_INT >= 34) {
+            val nm = getSystemService(android.app.NotificationManager::class.java)
+            if (!nm.canUseFullScreenIntent()) {
+                startActivity(Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT, android.net.Uri.parse("package:$packageName")))
+            }
+        }
+        val pm = getSystemService(android.os.PowerManager::class.java)
+        if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+            startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, android.net.Uri.parse("package:$packageName")))
+        }
     }
 
     private fun atualizarHorario() {
@@ -91,7 +101,14 @@ class main : AppCompatActivity() {
         val botaoAlarme = findViewById<Button>(R.id.botao_alarme_teste)
         val botaoTomei = findViewById<Button>(R.id.botao_tomei)
         botaoAlarme.setOnClickListener { startActivity(Intent(this, alarme::class.java)) }
-        botaoTomei.setOnClickListener { confirmarTomada() }
+        botaoTomei.setOnClickListener {
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle("Confirmar pílula")
+                .setMessage("Você tomou sua pílula de hoje?")
+                .setNegativeButton("Ainda não", null)
+                .setPositiveButton("Sim, tomei") { _, _ -> confirmarTomada() }
+                .show()
+        }
         lifecycleScope.launch(Dispatchers.IO) {
             val db = AppDatabase.get(this@main)
             val alarme = db.alarmDao().buscarUltimo()
@@ -313,7 +330,6 @@ class main : AppCompatActivity() {
 
         hist.setOnClickListener { historico() }
 
-        // so para testar banco
         lifecycleScope.launch(Dispatchers.IO) {
             val usuario = AppDatabase.get(this@main).userDao().buscarUsuario()
             withContext(Dispatchers.Main) {

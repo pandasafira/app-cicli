@@ -156,8 +156,13 @@ class cadastro : AppCompatActivity() {
                 birthDate = data_nasc.text.toString(),
                 createdAt = LocalDate.now().toString()
             )
+            val inicioData = try { LocalDate.parse(ini_cartela.text.toString(), DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT)) } catch (e: Exception) { null }
+            if (inicioData == null || inicioData.isAfter(LocalDate.now())) {
+                Toast.makeText(this, "Confira a data de início da cartela", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val inicio = inicioData.toString()
             val (ativos, placebo, pausa) = cartelas[cartela.selectedItemPosition]
-            val inicio = LocalDate.parse(ini_cartela.text.toString(), DateTimeFormatter.ofPattern("dd/MM/uuuu")).toString()
 
             lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.get(this@cadastro)
@@ -177,7 +182,7 @@ class cadastro : AppCompatActivity() {
                 db.pillPackDao().inserir(
                     PillPack(
                         userId = userId,
-                        birthPillId = pilula?.id,
+                        birthPillId = pilulaId,
                         activeDays = ativos,
                         placeboDays = placebo,
                         pauseDays = pausa,

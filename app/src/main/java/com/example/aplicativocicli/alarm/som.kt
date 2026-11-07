@@ -14,6 +14,7 @@ object som_alarme {
         if (player != null) return
         val uri = Uri.parse("android.resource://${context.packageName}/${R.raw.animal_crossing}")
         player = MediaPlayer().apply {
+            setWakeMode(context.applicationContext, android.os.PowerManager.PARTIAL_WAKE_LOCK)
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ALARM)

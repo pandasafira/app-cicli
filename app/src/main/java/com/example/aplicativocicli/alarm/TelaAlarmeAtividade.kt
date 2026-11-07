@@ -57,8 +57,7 @@ class AlarmActivity : AppCompatActivity() {
             val usuario = db.userDao().buscarUsuario()
             val cartela = db.pillPackDao().cartelaAtual()
             val agora = LocalDateTime.now().withNano(0).toString()
-            val ms = ex.getLong("scheduled_at")
-            val previsto = if (ms > 0) java.time.Instant.ofEpochMilli(ms).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime().withNano(0).toString() else agora
+            val previsto = ex.getString("scheduled_at") ?: agora
 
             if (usuario != null && cartela != null) {
                 db.historicoDao().inserir(
