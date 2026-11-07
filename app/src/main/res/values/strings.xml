@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Aplicativo Cicli</string>
+    <string name="aviso_medico">Estas informações são apenas auxiliares e não substituem a orientação de um profissional de saúde. Em caso de dúvidas ou insegurança, converse com seu médico ou farmacêutico. 💗</string>
 </resources>

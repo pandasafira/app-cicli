@@ -6,9 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import com.example.aplicativocicli.data.AppDatabase
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 
 class infoPilula : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +25,17 @@ class infoPilula : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { finish() }
 
         val id = intent.getLongExtra("pill_id", -1)
+
+        val botaoBula = findViewById<MaterialButton>(R.id.botao_bula)
+        botaoBula.setOnClickListener {
+            val nome = findViewById<TextView>(R.id.txt_nome).text.toString()
+            val url = "https://consultas.anvisa.gov.br/#/bulario/q/?nomeProduto=${Uri.encode(nome)}"
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this, "Não foi possível abrir o navegador", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         lifecycleScope.launch(Dispatchers.IO) {
             val dao = AppDatabase.get(this@infoPilula).pilulaDao()

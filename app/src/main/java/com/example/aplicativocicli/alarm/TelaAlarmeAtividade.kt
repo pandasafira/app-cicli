@@ -26,7 +26,7 @@ class AlarmActivity : AppCompatActivity() {
         val limite = ex.getInt("limit")
         val intervalo = ex.getInt("interval")
 
-        findViewById<TextView>(R.id.txt_tentativa).text = "Lembrete ${tentativa + 1} de ${limite + 1}"
+        findViewById<TextView>(R.id.txt_tentativa).text = "Lembrete ${tentativa + 1} de ${limite}"
 
         findViewById<Button>(R.id.btn_tomei).setOnClickListener {
             salvar(ex, DoseStatus.TAKEN)
@@ -47,6 +47,7 @@ class AlarmActivity : AppCompatActivity() {
     }
 
     private fun salvar(ex: Bundle, status: DoseStatus) {
+        som_alarme.parar()
         val alarmId = ex.getInt("alarm_id")
         notificacao.cancelar(this, alarmId)
         alarme_agenda.cancelarRepeticao(this, alarmId)
@@ -56,6 +57,8 @@ class AlarmActivity : AppCompatActivity() {
             val usuario = db.userDao().buscarUsuario()
             val cartela = db.pillPackDao().cartelaAtual()
             val agora = LocalDateTime.now().withNano(0).toString()
+            val ms = ex.getLong("scheduled_at")
+            val previsto = if (ms > 0) java.time.Instant.ofEpochMilli(ms).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime().withNano(0).toString() else agora
 
             if (usuario != null && cartela != null) {
                 db.historicoDao().inserir(
@@ -63,7 +66,7 @@ class AlarmActivity : AppCompatActivity() {
                         userId = usuario.id,
                         packId = cartela.id,
                         alarmId = alarmId.toLong(),
-                        scheduledAt = ex.getString("scheduled_at") ?: agora,
+                        scheduledAt = previsto,
                         confirmedAt = if (status == DoseStatus.TAKEN) agora else null,
                         status = status,
                         createdAt = agora

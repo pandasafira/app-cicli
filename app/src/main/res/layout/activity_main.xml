@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             android:background="#B86D82"
+            app:navigationContentDescription="Abrir menu"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:navigationIcon="@drawable/bars_icon_small"
             app:layout_constraintTop_toTopOf="parent"
@@ -271,7 +272,8 @@
             app:layout_constraintTop_toBottomOf="@id/card_historico"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            app:navigationContentDescription="Período menstrual">
 
             <ImageView
                 android:id="@+id/icone_periodo"
@@ -329,7 +331,8 @@
             app:layout_constraintTop_toBottomOf="@id/texto_mes_ano"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            app:navigationContentDescription="Calendário">
 
             <TextView
                 android:layout_width="0dp"
