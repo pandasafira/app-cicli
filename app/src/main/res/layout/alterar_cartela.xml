@@ -117,6 +117,18 @@
                 android:hint="Digite o anticoncepcional"
                 android:inputType="text"
                 android:paddingHorizontal="12dp" />
+            <TextView
+                android:id="@+id/txt_erro_nome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/fundo_erro"
+                android:drawablePadding="8dp"
+                android:padding="8dp"
+                android:text="Informe o novo anticoncepcional"
+                android:textColor="#5A2E3A"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -148,7 +160,8 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/card_alarme"
                 android:hint="dd/mm/aaaa"
-                android:inputType="date"
+                android:inputType="number"
+                android:maxLength="10"
                 android:paddingHorizontal="12dp" />
 
             <TextView

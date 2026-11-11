@@ -4,10 +4,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import com.example.aplicativocicli.alarme
 import com.example.aplicativocicli.data.Alarm
 import com.example.aplicativocicli.data.AppDatabase
 import com.example.aplicativocicli.main
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Calendar
 
 object alarme_agenda {
@@ -49,8 +52,12 @@ object alarme_agenda {
         return c.timeInMillis
     }
 
-    suspend fun agendar(context: Context, a: Alarm, amanha: Boolean = false) {
+    suspend fun agendar(context: Context, a: Alarm, pularHoje: Boolean = false) {
         val cartela = AppDatabase.get(context).pillPackDao().cartelaAtual()
+        var quando = nextTime(a.hour, a.minute)
+        val hoje = LocalDate.now()
+        val dataQuando = Instant.ofEpochMilli(quando).atZone(ZoneId.systemDefault()).toLocalDate()
+        if (pularHoje && dataQuando == hoje) quando += 86_400_000L
         val extras = Bundle().apply {
             putInt("alarm_id", a.id.toInt())
             putInt("hour", a.hour)
@@ -62,8 +69,9 @@ object alarme_agenda {
             putInt("active", cartela?.activeDays ?: 28)
             putInt("placebo", cartela?.placeboDays ?: 0)
             putInt("pause", cartela?.pauseDays ?: 0)
+            putInt("sound_index", a.soundIndex)
+            putLong("scheduled_at", quando)
         }
-        val quando = nextTime(a.hour, a.minute) + if (amanha) 86_400_000L else 0L
         schedule(context, quando, extras, a.id.toInt())
     }
 }

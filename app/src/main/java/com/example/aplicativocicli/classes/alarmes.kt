@@ -27,4 +27,5 @@ interface alarmDao {
 
     @Update
     suspend fun atualizar(alarme: Alarm)
+
 }

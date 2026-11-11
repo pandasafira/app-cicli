@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.aplicativocicli.alarm.alarme_agenda
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.aplicativocicli.data.Alarm
 import com.example.aplicativocicli.data.AppDatabase
@@ -19,8 +18,14 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ImageButton
+import com.example.aplicativocicli.alarm.som_alarme
 
 class alarme : AppCompatActivity() {
+    override fun onDestroy() {
+        super.onDestroy()
+        som_alarme.pararPreview()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,7 +52,11 @@ class alarme : AppCompatActivity() {
         var botao_salvar = findViewById<Button>(R.id.btnSalvar)
         val spinnerIntervalo = findViewById<Spinner>(R.id.spinnerIntervalo)
         val spinnerLimite = findViewById<Spinner>(R.id.spinnerLimite)
-        val switchAtivo = findViewById<SwitchCompat>(R.id.switchAtivo)
+        val spinnerMusica = findViewById<Spinner>(R.id.spinnerMusica)
+        val botaoPreview = findViewById<ImageButton>(R.id.btnPreview)
+        botaoPreview.setOnClickListener {
+            som_alarme.preview(this, spinnerMusica.selectedItemPosition)
+        }
 
         spinnerIntervalo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -79,7 +88,7 @@ class alarme : AppCompatActivity() {
                         if (num == a.intervalMinutes) { spinnerIntervalo.setSelection(i); break }
                     }
                     spinnerLimite.setSelection(a.repeatLimit - 1)
-                    switchAtivo.isChecked = a.active
+                    spinnerMusica.setSelection(a.soundIndex)
                 }
             }
         }
@@ -89,22 +98,24 @@ class alarme : AppCompatActivity() {
             val minuto = pickerMinuto.value
             val intervalo = spinnerIntervalo.selectedItem.toString().filter { it.isDigit() }.toIntOrNull() ?: 0
             val limite = spinnerLimite.selectedItemPosition + 1
-            val ativo = switchAtivo.isChecked
+            val musica = spinnerMusica.selectedItemPosition
 
             lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.get(this@alarme)
                 val usuario = db.userDao().buscarUsuario() ?: return@launch
                 val editado = alarmeEditado
                 val salvo = if (editado != null) {
-                    val novo = editado.copy(hour = hora, minute = minuto, intervalMinutes = intervalo, repeatLimit = limite, active = ativo)
+                    val novo = editado.copy(hour = hora, minute = minuto, intervalMinutes = intervalo, repeatLimit = limite, active = true, soundIndex = musica)
                     db.alarmDao().atualizar(novo)
                     alarme_agenda.cancel(this@alarme, novo.id.toInt())
+                    alarme_agenda.cancelarRepeticao(this@alarme, novo.id.toInt())
                     novo
                 } else {
-                    val novo = Alarm(userId = usuario.id, hour = hora, minute = minuto, intervalMinutes = intervalo, repeatLimit = limite, active = ativo, createdAt = LocalDate.now().toString())
+                    val novo = Alarm(userId = usuario.id, hour = hora, minute = minuto, intervalMinutes = intervalo, repeatLimit = limite, active = true, soundIndex = musica, createdAt = LocalDate.now().toString())
                     novo.copy(id = db.alarmDao().inserir(novo))
                 }
-                if (ativo) alarme_agenda.agendar(this@alarme, salvo)
+                val jaRegistrou = editado != null && db.historicoDao().registrosNoDia(salvo.id, LocalDate.now().toString()) > 0
+                alarme_agenda.agendar(this@alarme, salvo, pularHoje = jaRegistrou)
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@alarme, "Alarme salvo!", Toast.LENGTH_SHORT).show()
                     finish()

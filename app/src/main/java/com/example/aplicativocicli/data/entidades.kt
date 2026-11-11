@@ -163,7 +163,8 @@ data class Alarm(
     @ColumnInfo(name = "interval_minutes") val intervalMinutes: Int,
     @ColumnInfo(name = "repeat_limit") val repeatLimit: Int,
     val active: Boolean,
-    @ColumnInfo(name = "created_at") val createdAt: String
+    @ColumnInfo(name = "created_at") val createdAt: String,
+    @ColumnInfo(name = "sound_index", defaultValue = "0") val soundIndex: Int = 0
 )
 
 // historico de tomadas

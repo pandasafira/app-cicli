@@ -56,6 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Configurar Alarme"
+                android:fontFamily="@font/silkscreen_regular"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="#B86D82"
@@ -89,8 +90,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Horário do alarme"
+                        android:fontFamily="@font/silkscreen_regular"
                         android:textColor="#B86D82"
-                        android:textSize="16sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -145,8 +147,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Intervalo de Repetições"
+                        android:fontFamily="@font/silkscreen_regular"
                         android:textColor="#B86D82"
-                        android:textSize="16sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -186,8 +189,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Limite de Repetições"
+                        android:fontFamily="@font/silkscreen_regular"
                         android:textColor="#B86D82"
-                        android:textSize="16sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -207,7 +211,7 @@
                     android:entries="@array/limit_repeticao" />
             </LinearLayout>
 
-            <!-- Card ativo -->
+            <!-- Card musica -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
@@ -222,16 +226,25 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Alarme ativo"
-                    android:textSize="16sp"
+                    android:text="Som do alarme"
+                    android:fontFamily="@font/silkscreen_regular"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="#B86D82" />
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchAtivo"
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/spinnerMusica"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
-                    android:checked="true" />
+                    android:entries="@array/sons_alarme" />
+
+                <ImageButton
+                    android:id="@+id/btnPreview"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@android:drawable/ic_media_play"
+                    android:contentDescription="Ouvir música" />
             </LinearLayout>
 
             <TextView

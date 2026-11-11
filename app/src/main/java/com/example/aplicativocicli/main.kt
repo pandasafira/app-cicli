@@ -117,8 +117,7 @@ class main : AppCompatActivity() {
             var habilitado = true
             if (alarme != null && cartela?.startDate != null) {
                 val pausa = dia_pausa.e_pausa(LocalDate.parse(cartela.startDate), cartela.activeDays, cartela.placeboDays, cartela.pauseDays)
-                val horario = LocalDateTime.of(LocalDate.now(), LocalTime.of(alarme.hour, alarme.minute)).toString()
-                val dose = db.historicoDao().buscarDose(cartela.id, horario)
+                val dose = db.historicoDao().buscarDoseDoDia(cartela.id, alarme.id, LocalDate.now().toString())
                 if (pausa) {
                     texto = "Hoje é dia de pausa"
                     habilitado = false
@@ -162,7 +161,7 @@ class main : AppCompatActivity() {
             notificacao.cancelar(this@main, id)
             if (agora.isBefore(horario)) {
                 alarme_agenda.cancel(this@main, id)
-                alarme_agenda.agendar(this@main, alarme, amanha = true)
+                alarme_agenda.agendar(this@main, alarme, pularHoje = true)
             }
 
             withContext(Dispatchers.Main) {
@@ -264,6 +263,16 @@ class main : AppCompatActivity() {
         }
     }
 
+    private fun atualizarAviso() {
+        val aviso = findViewById<View>(R.id.card_aviso)
+        val prefs = getSharedPreferences("cicli", MODE_PRIVATE)
+        aviso.visibility = if (prefs.getBoolean("aviso_troca", false)) View.VISIBLE else View.GONE
+        findViewById<Button>(R.id.botao_entendi_aviso).setOnClickListener {
+            prefs.edit().putBoolean("aviso_troca", false).apply()
+            aviso.visibility = View.GONE
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -274,6 +283,7 @@ class main : AppCompatActivity() {
         atualizarCalendario()
         atualizarPeriodo()
         atualizarComprimido()
+        atualizarAviso()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

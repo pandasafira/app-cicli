@@ -47,7 +47,7 @@ object notificacao {
             .build()
         notification.flags = notification.flags or Notification.FLAG_INSISTENT
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-            som_alarme.tocar(context)
+            som_alarme.tocar(context, extras.getInt("sound_index"))
             NotificationManagerCompat.from(context).notify(alarmId, notification)
         }
     }

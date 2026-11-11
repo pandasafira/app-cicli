@@ -23,4 +23,10 @@ interface historicoDao {
 
     @Query("SELECT COUNT(*) FROM medication_history WHERE alarm_id = :alarmId AND scheduled_at LIKE :dia || '%'")
     suspend fun contarNoDia(alarmId: Long, dia: String): Int
+
+    @Query("SELECT COUNT(*) FROM medication_history WHERE alarm_id = :alarmId AND substr(scheduled_at, 1, 10) = :dia")
+    suspend fun registrosNoDia(alarmId: Long, dia: String): Int
+
+    @Query("SELECT * FROM medication_history WHERE pack_id = :packId AND alarm_id = :alarmId AND substr(scheduled_at, 1, 10) = :dia LIMIT 1")
+    suspend fun buscarDoseDoDia(packId: Long, alarmId: Long, dia: String): MedicationHistory?
 }

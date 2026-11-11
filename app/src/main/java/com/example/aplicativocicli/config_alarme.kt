@@ -25,6 +25,8 @@ class config_alarme : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.config_alarme)
+        findViewById<TextView>(R.id.texto_aviso).text =
+            androidx.core.text.HtmlCompat.fromHtml(getString(R.string.recomendacao), androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)

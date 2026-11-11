@@ -3,6 +3,7 @@ package com.example.aplicativocicli
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -66,8 +67,19 @@ class alterar_cartela : AppCompatActivity() {
         mostrarAtual()
 
         botao.setOnClickListener {
+            val nomeDigitado = editNome.text.toString().trim()
+            val txtErroNome = findViewById<TextView>(R.id.txt_erro_nome)
+
+            if (nomeDigitado.isEmpty()) {
+                txtErroNome.visibility = View.VISIBLE
+                editNome.requestFocus()
+                return@setOnClickListener
+            } else {
+                txtErroNome.visibility = View.GONE
+            }
+
             val inicio = try {
-                LocalDate.parse(editInicio.text.toString(), formato)
+                LocalDate.parse(editInicio.text.toString().trim(), formato)
             } catch (e: Exception) {
                 null
             }
@@ -75,7 +87,6 @@ class alterar_cartela : AppCompatActivity() {
                 Toast.makeText(this, "Confira a data de início", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val nomeDigitado = editNome.text.toString().trim()
             val (ativos, placebo, pausa) = cartelas[spinner.selectedItemPosition]
 
             MaterialAlertDialogBuilder(this)
@@ -118,6 +129,7 @@ class alterar_cartela : AppCompatActivity() {
                             createdAt = LocalDate.now().toString()
                         )
                     )
+                    getSharedPreferences("cicli", MODE_PRIVATE).edit().putBoolean("aviso_troca", true).apply()
 
                     // realinha os alarmes ativos com a nova cartela
                     db.alarmDao().listar().filter { it.active }.forEach {
