@@ -24,6 +24,7 @@ import java.util.Locale
 class historicoAlarme : AppCompatActivity() {
     private val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")
     private val formatoMes = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("pt", "BR"))
+    private val formatoFalado = DateTimeFormatter.ofPattern("d 'de' MMMM 'às' HH:mm", Locale("pt", "BR"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,15 +74,20 @@ class historicoAlarme : AppCompatActivity() {
         val card = layoutInflater.inflate(R.layout.card_hist, lista, false)
         card.findViewById<TextView>(R.id.txt_nome).text = r.pillName
         val tomada = r.status == DoseStatus.TAKEN
-        val data = LocalDateTime.parse(r.confirmedAt ?: r.scheduledAt).format(formato)
+        val momento = LocalDateTime.parse(r.confirmedAt ?: r.scheduledAt)
         val icone = card.findViewById<TextView>(R.id.icone_status)
 
         card.findViewById<TextView>(R.id.txt_status).text = if (tomada) "PÍLULA TOMADA" else "NÃO TOMADA"
-        card.findViewById<TextView>(R.id.txt_data).text = data
+        card.findViewById<TextView>(R.id.txt_data).text = momento.format(formato)
         icone.text = if (tomada) "✓" else "✕"
         icone.setTextColor(if (tomada) 0xFF5E9A5A.toInt() else 0xFFE06B6B.toInt())
         icone.background.mutate().setTint(if (tomada) 0xFFC8DCC4.toInt() else 0xFFF5C6C6.toInt())
         card.findViewById<View>(R.id.aviso).visibility = if (tomada) View.GONE else View.VISIBLE
+
+        val status = if (tomada) "Pílula tomada" else "Pílula não tomada"
+        val falado = "$status, ${r.pillName}, ${momento.format(formatoFalado)}"
+        card.contentDescription = if (tomada) falado else "$falado. Verifique o tempo de atraso da pílula"
+        card.isFocusable = true
         lista.addView(card)
     }
-}
+    }

@@ -84,6 +84,13 @@ class config_alarme : AppCompatActivity() {
                 .show()
         }
         val switch = item.findViewById<MaterialSwitch>(R.id.switch_ativo)
+        val hora = "%02d:%02d".format(a.hour, a.minute)
+
+        switch.contentDescription = "Alarme das $hora"
+        item.findViewById<ImageButton>(R.id.botao_editar).contentDescription = "Editar alarme das $hora"
+        item.findViewById<ImageButton>(R.id.botao_excluir).contentDescription = "Excluir alarme das $hora"
+
+
         switch.isChecked = a.active
         switch.setOnCheckedChangeListener { _, ligado ->
             lifecycleScope.launch(Dispatchers.IO) {

@@ -58,7 +58,8 @@
             android:text="✓"
             android:textColor="#5E9A5A"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:importantForAccessibility="no"/>
     </FrameLayout>
 
     <LinearLayout

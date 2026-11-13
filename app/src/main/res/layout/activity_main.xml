@@ -81,7 +81,8 @@
                 android:layout_height="20dp"
                 android:src="@drawable/pilula_pixel"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAccessibility="no"/>
 
             <TextView
                 android:id="@+id/texto_titulo_card"
@@ -160,7 +161,8 @@
                 android:src="@drawable/manha"
                 app:layout_constraintBottom_toBottomOf="@id/clock"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/texto_nome_pilula" />
+                app:layout_constraintTop_toTopOf="@id/texto_nome_pilula"
+                android:importantForAccessibility="no"/>
 
             <ImageView
                 android:id="@+id/urso_noite"
@@ -170,7 +172,8 @@
                 android:src="@drawable/noite"
                 app:layout_constraintBottom_toBottomOf="@id/clock"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/texto_nome_pilula" />
+                app:layout_constraintTop_toTopOf="@id/texto_nome_pilula"
+                android:importantForAccessibility="no"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/botao_alarme_teste"
@@ -231,7 +234,8 @@
                 android:src="@drawable/history_icon"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:importantForAccessibility="no"/>
 
             <ImageView
                 android:id="@+id/press"
@@ -242,6 +246,7 @@
                 android:src="@drawable/press"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:importantForAccessibility="no"
                 app:layout_constraintStart_toEndOf="@id/icone_historico" />
 
             <TextView
@@ -283,7 +288,8 @@
                 android:src="@drawable/period"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:importantForAccessibility="no"/>
 
             <TextView
                 android:id="@+id/texto_periodo"

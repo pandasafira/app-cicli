@@ -66,10 +66,12 @@
                 android:inputType="textPersonName" />
 
             <TextView
+                android:id="@+id/label_nascimento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/silkscreen_regular"
+                android:labelFor="@id/edit_nascimento"
                 android:text="Data de nascimento" />
 
             <EditText
