@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.aplicativocicli.classes.historicoDao
 import com.example.aplicativocicli.data.AppDatabase
 import com.example.aplicativocicli.data.DoseStatus
 import com.example.aplicativocicli.data.MedicationHistory
@@ -43,7 +44,7 @@ class historicoAlarme : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             val dao = AppDatabase.get(this@historicoAlarme).historicoDao()
             dao.limparAntigos(LocalDate.now().minusMonths(3).toString())
-            val registros = dao.listar()
+            val registros = dao.listarHist()
             withContext(Dispatchers.Main) {
                 val lista = findViewById<LinearLayout>(R.id.lista_historico)
                 lista.removeAllViews()
@@ -68,8 +69,9 @@ class historicoAlarme : AppCompatActivity() {
         lista.addView(titulo)
     }
 
-    private fun adicionarCard(lista: LinearLayout, r: MedicationHistory) {
+    private fun adicionarCard(lista: LinearLayout, r: historicoDao.HistoricoItem) {
         val card = layoutInflater.inflate(R.layout.card_hist, lista, false)
+        card.findViewById<TextView>(R.id.txt_nome).text = r.pillName
         val tomada = r.status == DoseStatus.TAKEN
         val data = LocalDateTime.parse(r.confirmedAt ?: r.scheduledAt).format(formato)
         val icone = card.findViewById<TextView>(R.id.icone_status)

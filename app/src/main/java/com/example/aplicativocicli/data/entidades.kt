@@ -28,7 +28,8 @@ data class BirthPill(
     @ColumnInfo(name = "placebo_days") val placeboDays: Int,
     @ColumnInfo(name = "pause_days") val pauseDays: Int,
     @ColumnInfo(name = "miss_hours") val missHours: Int?,
-    @ColumnInfo(name = "source_date") val sourceDate: String?
+    @ColumnInfo(name = "source_date") val sourceDate: String?,
+    @ColumnInfo(name = "source", defaultValue = "'anvisa'") val source: String = "anvisa"
 )
 
 // composicao da pilula, principio ativo

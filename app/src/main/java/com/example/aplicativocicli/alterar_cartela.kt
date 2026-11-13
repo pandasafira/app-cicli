@@ -31,17 +31,18 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class alterar_cartela : AppCompatActivity() {
-    private val cartelas = listOf(
-        Triple(21, 0, 7),
-        Triple(22, 0, 6),
-        Triple(24, 0, 4),
-        Triple(28, 0, 2),
-        Triple(21, 7, 0),
-        Triple(24, 4, 0),
-        Triple(84, 0, 7),
-        Triple(28, 0, 0)
-    )
     private val formato = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT)
+
+    private fun composicao(posicao: Int): Triple<Int, Int, Int> = when (posicao) {
+        0 -> Triple(21, 0, 7)
+        1 -> Triple(22, 0, 6)
+        2 -> Triple(24, 0, 4)
+        3 -> Triple(26, 0, 2)
+        4 -> Triple(21, 7, 0)
+        5 -> Triple(24, 4, 0)
+        6 -> Triple(84, 0, 7)
+        else -> Triple(28, 0, 0)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,23 +88,19 @@ class alterar_cartela : AppCompatActivity() {
                 Toast.makeText(this, "Confira a data de início", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val (ativos, placebo, pausa) = cartelas[spinner.selectedItemPosition]
+            val (ativos, placebo, pausa) = composicao(spinner.selectedItemPosition)
 
             MaterialAlertDialogBuilder(this)
                 .setTitle("Alterar cartela")
                 .setMessage("Trocar para: ${spinner.selectedItem}\nInício: ${editInicio.text}\n\nA cartela atual continua salva no histórico.")
                 .setNegativeButton("Cancelar", null)
                 .setPositiveButton("Alterar") { _, _ ->
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val db = AppDatabase.get(this@alterar_cartela)
-                    val usuario = db.userDao().buscarUsuario() ?: return@launch
-                    val atual = db.pillPackDao().cartelaAtual()
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val db = AppDatabase.get(this@alterar_cartela)
+                        val usuario = db.userDao().buscarUsuario() ?: return@launch
 
-                    val pilulaId: Long? = if (nomeDigitado.isBlank()) {
-                        atual?.birthPillId
-                    } else {
                         val existente = db.pilulaDao().listar().find { normalizar(it.medName) == normalizar(nomeDigitado) }
-                        existente?.id ?: db.pilulaDao().inserir(
+                        val pilulaId: Long = existente?.id ?: db.pilulaDao().inserir(
                             BirthPill(
                                 medName = nomeDigitado,
                                 medNameSearch = normalizar(nomeDigitado),
@@ -111,41 +108,40 @@ class alterar_cartela : AppCompatActivity() {
                                 placeboDays = placebo,
                                 pauseDays = pausa,
                                 missHours = null,
-                                sourceDate = null
+                                sourceDate = null,
+                                source = "manual"
                             )
                         )
-                    }
 
-                    db.pillPackDao().desmarcarAtuais(usuario.id)
-                    db.pillPackDao().inserir(
-                        PillPack(
-                            userId = usuario.id,
-                            birthPillId = pilulaId,
-                            activeDays = ativos,
-                            placeboDays = placebo,
-                            pauseDays = pausa,
-                            startDate = inicio.toString(),
-                            isCurrent = true,
-                            createdAt = LocalDate.now().toString()
+                        db.pillPackDao().desmarcarAtuais(usuario.id)
+                        db.pillPackDao().inserir(
+                            PillPack(
+                                userId = usuario.id,
+                                birthPillId = pilulaId,
+                                activeDays = ativos,
+                                placeboDays = placebo,
+                                pauseDays = pausa,
+                                startDate = inicio.toString(),
+                                isCurrent = true,
+                                createdAt = LocalDate.now().toString()
+                            )
                         )
-                    )
-                    getSharedPreferences("cicli", MODE_PRIVATE).edit().putBoolean("aviso_troca", true).apply()
+                        getSharedPreferences("cicli", MODE_PRIVATE).edit().putBoolean("aviso_troca", true).apply()
 
-                    // realinha os alarmes ativos com a nova cartela
-                    db.alarmDao().listar().filter { it.active }.forEach {
-                        alarme_agenda.cancel(this@alterar_cartela, it.id.toInt())
-                        alarme_agenda.cancelarRepeticao(this@alterar_cartela, it.id.toInt())
-                        alarme_agenda.agendar(this@alterar_cartela, it)
-                    }
+                        db.alarmDao().listar().filter { it.active }.forEach {
+                            alarme_agenda.cancel(this@alterar_cartela, it.id.toInt())
+                            alarme_agenda.cancelarRepeticao(this@alterar_cartela, it.id.toInt())
+                            alarme_agenda.agendar(this@alterar_cartela, it)
+                        }
 
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@alterar_cartela, "Cartela atualizada!", Toast.LENGTH_SHORT).show()
-                        finish()
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@alterar_cartela, "Cartela atualizada!", Toast.LENGTH_SHORT).show()
+                            finish()
                         }
                     }
                 }.show()
-            }
         }
+    }
 
     private fun mostrarAtual() {
         val txtPilula = findViewById<TextView>(R.id.txt_pilula_atual)
@@ -163,7 +159,7 @@ class alterar_cartela : AppCompatActivity() {
                     partes.joinToString(" + ")
                 }
             }
-            val pilulas = AppDatabase.get(this@alterar_cartela).pilulaDao().listar()
+            val pilulas = db.pilulaDao().listar()
             withContext(Dispatchers.Main) {
                 val editNome = findViewById<AutoCompleteTextView>(R.id.edit_novo_anticoncepcional)
                 editNome.setAdapter(
