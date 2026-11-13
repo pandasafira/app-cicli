@@ -40,6 +40,9 @@
         <receiver
             android:name=".alarm.AlarmReceiver"
             android:exported="false" />
+        <receiver
+            android:name=".alarm.AlarmTimeoutReceiver"
+            android:exported="false" />
 
         <activity
             android:name=".alarm.AlarmActivity"

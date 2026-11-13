@@ -1,6 +1,7 @@
 package com.example.aplicativocicli.alarm
 
 import android.Manifest
+import android.app.AlarmManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -18,6 +19,14 @@ import com.example.aplicativocicli.R
 
 object notificacao {
     const val CHANNEL_ID = "cicli_alarm_v2"
+    private const val TEMPO_TOCANDO = 60_000L
+    private const val OFFSET_TIMEOUT = 200000
+
+    private fun pendingTimeout(context: Context, alarmId: Int, extras: Bundle? = null): PendingIntent {
+        val intent = Intent(context, AlarmTimeoutReceiver::class.java)
+        if (extras != null) intent.putExtras(extras)
+        return PendingIntent.getBroadcast(context, alarmId + OFFSET_TIMEOUT, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+    }
 
     fun createChannel(context: Context) {
         val channel = NotificationChannel(CHANNEL_ID, "Alarme do anticoncepcional", NotificationManager.IMPORTANCE_HIGH).apply {
@@ -29,6 +38,7 @@ object notificacao {
 
     fun cancelar(context: Context, alarmId: Int) {
         NotificationManagerCompat.from(context).cancel(alarmId)
+        context.getSystemService(AlarmManager::class.java).cancel(pendingTimeout(context, alarmId))
     }
 
     fun show(context: Context, extras: Bundle) {
@@ -49,6 +59,8 @@ object notificacao {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
             som_alarme.tocar(context, extras.getInt("sound_index"))
             NotificationManagerCompat.from(context).notify(alarmId, notification)
+            val am = context.getSystemService(AlarmManager::class.java)
+            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TEMPO_TOCANDO, pendingTimeout(context, alarmId, extras))
         }
     }
 }

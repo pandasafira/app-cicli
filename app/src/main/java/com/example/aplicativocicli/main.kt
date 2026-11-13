@@ -298,6 +298,10 @@ class main : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        lifecycleScope.launch(Dispatchers.IO) {
+            AppDatabase.get(this@main).historicoDao().limparAntigos(LocalDate.now().minusMonths(3).toString())
+        }
+
         val busca = findViewById<AutoCompleteTextView>(R.id.busca)
         lifecycleScope.launch(Dispatchers.IO) {
             val pilulas = AppDatabase.get(this@main).pilulaDao().listar()
@@ -370,5 +374,5 @@ class main : AppCompatActivity() {
 
 
         notificacao.createChannel(this)
-        }
     }
+}
