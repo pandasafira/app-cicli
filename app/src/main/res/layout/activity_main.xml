@@ -21,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="#B86D82"
+            android:background="@drawable/fundo_tela"
             app:navigationContentDescription="Abrir menu"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:navigationIcon="@drawable/bars_icon_small"

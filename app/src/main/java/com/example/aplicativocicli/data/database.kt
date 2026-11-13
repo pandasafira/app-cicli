@@ -32,21 +32,33 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): userDao
     abstract fun alarmDao(): alarmDao
     abstract fun pilulaDao(): pilulaDao
-    abstract fun pillPackDao() : pillPackDao
-    abstract fun historicoDao() : historicoDao
+    abstract fun pillPackDao(): pillPackDao
+    abstract fun historicoDao(): historicoDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null
 
+        private fun temColuna(db: SupportSQLiteDatabase, tabela: String, coluna: String): Boolean {
+            db.query("PRAGMA table_info($tabela)").use { c ->
+                val i = c.getColumnIndex("name")
+                while (c.moveToNext()) if (c.getString(i) == coluna) return true
+            }
+            return false
+        }
+
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE alarm ADD COLUMN sound_index INTEGER NOT NULL DEFAULT 0")
+                if (!temColuna(db, "alarm", "sound_index")) {
+                    db.execSQL("ALTER TABLE alarm ADD COLUMN sound_index INTEGER NOT NULL DEFAULT 0")
+                }
             }
         }
 
         val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE birth_pill ADD COLUMN source TEXT NOT NULL DEFAULT 'anvisa'")
+                if (!temColuna(db, "birth_pill", "source")) {
+                    db.execSQL("ALTER TABLE birth_pill ADD COLUMN source TEXT NOT NULL DEFAULT 'anvisa'")
+                }
             }
         }
 

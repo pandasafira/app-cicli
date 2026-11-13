@@ -56,8 +56,9 @@ class cadastro : AppCompatActivity() {
         setContentView(R.layout.activity_cadastro)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val barras = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             val teclado = insets.getInsets(WindowInsetsCompat.Type.ime())
-            v.setPadding(0, 0, 0, teclado.bottom)
+            v.setPadding(0, barras.top, 0, maxOf(barras.bottom, teclado.bottom))
             insets
         }
 
