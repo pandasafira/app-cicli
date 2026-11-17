@@ -49,7 +49,7 @@ Projeto desenvolvido para a disciplina **Projeto Tecnológico em Desenvolvimento
 
 ## Instalação do aplicativo
 
-1. Baixe o APK pelo seguinte link: **[Download do Cicli](COLOCAR_LINK_AQUI)**.
+1. Baixe o APK pelo seguinte link: **[Download do Cicli](https://drive.google.com/file/d/1h5VtX3UocCVoWRGlnc6VBxb58kKHBuoD/view?usp=sharing)**.
 2. Abra o arquivo baixado e selecione **Instalar**.
 3. No celular, autorize a instalação de aplicativos de fontes desconhecidas.
    
