@@ -53,7 +53,7 @@ Projeto desenvolvido para a disciplina **Projeto Tecnológico em Desenvolvimento
 2. Abra o arquivo baixado e selecione **Instalar**.
 3. No celular, autorize a instalação de aplicativos de fontes desconhecidas.
    
-  **2.1. Como autorizar a instalação?**
+  **3.1. Como autorizar a instalação?**
    
   Em versões mais recentes do Android, pode ser necessário desativar temporariamente o **Bloqueador Automático** para permitir a instalação do aplicativo.
   
@@ -69,7 +69,7 @@ Após essas etapas, a instalação deverá prosseguir normalmente.
 
 **Importante:** Nenhum tipo de malware foi implementado na aplicação.
 
-5. Ao iniciar o aplicativo, conceda as permissões solicitadas, especialmente notificações, alarmes em tela cheia e configurações necessárias para o funcionamento em segundo plano.
+4. Ao iniciar o aplicativo, conceda as permissões solicitadas, especialmente notificações, alarmes em tela cheia e configurações necessárias para o funcionamento em segundo plano.
 
 **Observação:** a concessão das permissões necessárias é importante para garantir o funcionamento adequado dos alarmes.
 
@@ -120,31 +120,36 @@ Para testar o funcionamento sem precisar aguardar o horário habitual:
 
 ## Banco de dados
 
-O projeto utiliza **SQLite**, com gerenciamento realizado pela biblioteca **Room**.
+O banco é SQLite, gerenciado pelo Room. O arquivo `cicli.db` já vem pronto e fica em `app/src/main/assets/`. Uma cópia está na pasta `Banco_de_dados/`.
 
-O banco de dados inicial está disponível em:
+Ele já vem com os dados dos anticoncepcionais (fonte ANVISA): pílulas, princípios ativos e medicamentos a evitar. As tabelas da usuária (users, pill_pack, alarm e medication_history) começam vazias de propósito, por causa da LGPD.
 
-`app/src/main/assets/cicli.db`
+### Arquivos da pasta `Banco_de_dados/`
 
-Esse arquivo é copiado para o dispositivo na primeira abertura do aplicativo.
-
-### Estrutura e arquivos
-
-| Arquivo | Descrição |
+| Arquivo | Para que serve |
 |---|---|
-| `database/cicli_schema.sql` | Script de criação das tabelas, índices e chaves. |
-| `database/consultas_exemplo.sql` | Consultas SQL utilizadas como exemplos. |
-| `app/src/main/assets/cicli.db` | Banco de dados com os dados iniciais dos medicamentos. |
+| cicli.db | Banco pronto, com os dados iniciais |
+| cicli_criacao.sql | Script de criação das tabelas |
+| tratamento_dados.py | Script que tratou os dados da planilha e carregou no banco |
+| consultas_exemplo.sql | Consultas de exemplo. A Parte 3 mostra as tabelas da usuária preenchidas |
 
-### Organização dos dados
+### Tratamento dos dados (Python)
 
-O banco já contém informações sobre anticoncepcionais, princípios ativos e medicamentos que podem interferir na eficácia contraceptiva.
+O `tratamento_dados.py` lê a planilha com os dados da ANVISA, padroniza os nomes e grava no banco. É um script de carga única, e o `cicli.db` já foi gerado com ele. Não é preciso rodar para usar o app.
 
-As tabelas relacionadas aos dados da usuária (`users`, `pill_pack`, `alarm` e `medication_history`) começam vazias e são preenchidas durante a utilização do aplicativo.
+As partes das pílulas e dos princípios ativos estão comentadas porque já foram executadas. Rodar de novo duplicaria linhas de `medicine_to_avoid`.
 
-Por questões de privacidade e em conformidade com os princípios da LGPD, nenhum dado pessoal de usuárias é distribuído junto ao projeto.
+Se quiser rodar mesmo assim, use uma cópia do banco:
 
-Para visualizar exemplos de registros nessas tabelas, consulte a **Parte 3** do arquivo `consultas_exemplo.sql`, utilizando uma cópia do banco de dados.
+1. Instale as dependências: `pip install gspread python-dotenv`
+2. Adicione e preencha o caminho da credencial do Google em um arquivo `.env`. Exemplo: google_cred=caminho/para/credenciais.json
+3. Rode: `python tratamento_dados.py`
+
+A credencial do Google e o `.env` não estão no repositório, por segurança.
+
+### Ver as tabelas da usuária preenchidas
+
+Abra uma cópia do `cicli.db` no DBeaver e rode a Parte 3 do `consultas_exemplo.sql`.
 
 ---
 
