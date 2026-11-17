@@ -120,16 +120,16 @@ Para testar o funcionamento sem precisar aguardar o horário habitual:
 
 ## Banco de dados
 
-O banco é SQLite, gerenciado pelo Room. O arquivo `cicli.db` já vem pronto e fica em `app/src/main/assets/`. Uma cópia está na pasta `Banco_de_dados/`.
+O banco é SQLite, gerenciado pelo Room. O arquivo `cicli.db` já vem pronto e fica em `app/src/main/assets/`. Uma cópia está na pasta `Banco de Dados/`.
 
 Ele já vem com os dados dos anticoncepcionais (fonte ANVISA): pílulas, princípios ativos e medicamentos a evitar. As tabelas da usuária (users, pill_pack, alarm e medication_history) começam vazias de propósito, por causa da LGPD.
 
-### Arquivos da pasta `Banco_de_dados/`
+### Arquivos da pasta `Banco de Dados/`
 
 | Arquivo | Para que serve |
 |---|---|
 | cicli.db | Banco pronto, com os dados iniciais |
-| cicli_criacao.sql | Script de criação das tabelas |
+| cicli_schema.sql | Script de criação das tabelas |
 | tratamento_dados.py | Script que tratou os dados da planilha e carregou no banco |
 | consultas_exemplo.sql | Consultas de exemplo. A Parte 3 mostra as tabelas da usuária preenchidas |
 
@@ -182,7 +182,7 @@ Os arquivos responsáveis pelo funcionamento dos alarmes estão organizados na p
 |---|---|
 | `alarme_agenda.kt` | Agendamento dos alarmes e das repetições utilizando AlarmManager. |
 | `AlarmReceiver.kt` | Recebe o disparo do alarme e verifica se o dia corresponde a uma pausa da cartela. |
-| `AlarmTimeoutReceiver.kt` | Trata alarmes sem resposta, realizando novas repetições ou registrando a dose como não tomada. |
+| `timeOutReceiver.kt` | Trata alarmes sem resposta, realizando novas repetições ou registrando a dose como não tomada. |
 | `TelaAlarmeAtividade.kt` | Exibe a tela do alarme e as opções de confirmação. |
 | `notificacao.kt` | Gerenciamento das notificações em tela cheia. |
 | `som.kt` | Reprodução da música selecionada para o alarme. |
